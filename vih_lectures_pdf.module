@@ -1,0 +1,51 @@
+<?php
+/**
+ * @file
+ */
+require_once libraries_get_path('tcpdf') . '/tcpdf.php';
+
+/**
+* Implements hook_menu().
+*/
+function vih_lectures_pdf_menu() {
+  $items = array();  
+  $items['node/%node/pdf'] = array(
+    'title' => 'PDF',
+    'page callback' => 'vih_lectures_pdf_booklet',
+    'page arguments' => array(1),
+    'access callback' => 'vih_lectures_pdf_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_ACTION,    
+
+  );  
+  return $items;
+}
+
+function vih_lectures_pdf_access($node) {
+  if ($node->type != 'vih_lectures' AND $node->type != 'vih_lecture') {
+    return false;
+  }
+  return true;
+}
+
+function vih_lectures_pdf_booklet($node) {
+  $pdf = new VIH_Lectures_Pdf();
+  $pdf->setHeading($node->title);
+  if ($node->type == 'vih_lectures') {
+    $pdf->setSubTitle($node->field_subtitle['und'][0]['safe_value']);
+    $pdf->setDescription($node->body['da'][0]['safe_value']);
+    $file = drupal_realpath($node->field_picture['da'][0]['uri']);
+
+    $pdf->addFrontpage($file);
+    foreach ($node->field_lectures['und'] AS $key => $value) {
+      $node = node_load($value['target_id']);
+      if ($node) {
+        $events[] = $node;
+      }
+    }
+  } else {
+    $events[] = $node;
+  }
+  
+  $pdf->render($events);
+}
