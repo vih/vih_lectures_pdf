@@ -2,9 +2,7 @@ core = "7.x"
 description = "PDF printouts of lectures"
 name = "VIH Lectures PDF"
 package = "VIH"
-version = "7.x-0.2"
+version = "7.x-0.3"
 
 dependencies[] = libraries
 dependencies[] = vih_lectures
-
-files[] = vih_lectures_pdf.inc
