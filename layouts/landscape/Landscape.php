@@ -9,40 +9,13 @@ Pdf of single lectures
 Pdf of all lectures in a view
 Pdf of specific lectures with frontpage etc
 **/
-require_once '../Base.pdf';
 
 class VIH_Lectures_Pdf_Landscape extends VIH_Lectures_Pdf_Base
 {
-    protected $pdf;
-    protected $heading = 'Vejle Idrætshøjskoles foredrag';
-    protected $sub_title = 'Kom og høre med!';
-    protected $description = 'description';    
-    protected $logo;
-
     function __construct()
     {
         parent::__construct('L','mm','A4');
         $this->logo = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'logo.jpg';
-    }
-
-    function setHeading($title)
-    {
-        $this->heading = $title;
-    }
-
-    function setSubtitle($title)
-    {
-        $this->sub_title = $title;
-    }
-
-    function setDescription($desc)
-    {
-        $this->description = $desc;
-    }
-    
-    function Header()
-    {
-        // left blank to remove line in header added by TCPDF
     }
     
     function addFrontpage($image)
@@ -140,47 +113,5 @@ class VIH_Lectures_Pdf_Landscape extends VIH_Lectures_Pdf_Base
         }
 
         $this->Output('foredrag.pdf', 'I');
-    }
-    
-    function t($phrase)
-    {
-        // Default to English
-        $phrases = array(
-          'Monday' => 'mandag',
-          'Tuesday' => 'tirsdag',
-          'Wednesday' => 'onsdag',
-          'Thursday' => 'torsdag',
-          'Friday' => 'fredag',
-          'Saturday' => 'lørdag',
-          'Sunday' => 'søndag',
-          'January' => 'januar',
-          'February' => 'februar',
-          'March' => 'marts',
-          'April' => 'april',
-          'May' => 'maj',
-          'June' => 'juni',
-          'July' => 'juli',
-          'August' => 'august',
-          'September' => 'september',
-          'October' => 'oktober',
-          'November' => 'november',
-          'December' => 'december',
-          '1' => 'januar',
-          '2' => 'februar',
-          '3' => 'marts',
-          '4' => 'april',
-          '5' => 'maj',
-          '6' => 'juni',
-          '7' => 'juli',
-          '8' => 'august',
-          '9' => 'september',
-          '10' => 'oktober',
-          '11' => 'november',
-          '12' => 'december'
-        );    
-        if (!empty($phrases[$phrase])) {
-            return $phrases[$phrase];
-        }
-        return $phrase;
     }
 }

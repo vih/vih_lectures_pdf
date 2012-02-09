@@ -29,7 +29,6 @@ function vih_lectures_pdf_access($node) {
 
 function vih_lectures_pdf_booklet($node) {
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
-  require_once dirname(__FILE__) . '/layouts/portrait/Portrait.php';
   $pdf = new VIH_Lectures_Pdf_Portrait();
   $pdf->setHeading($node->title);
   if ($node->type == 'vih_lectures') {
