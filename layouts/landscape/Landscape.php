@@ -82,7 +82,7 @@ class VIH_Lectures_Pdf_Landscape extends VIH_Lectures_Pdf_Base
             '#size' => chart_size(200, 200),
             '#data' => 'http://vih.dk'
         );
-        $qr_file = chart_copy($chart, 'my_chart', '/home/vih/vih.dk/sites/default/files/charts/');
+        $qr_file = chart_copy($chart, 'my_chart_' . uniqid(), 'public://charts/');
         
         if ($qr_file !== false) {
             $this->Image($qr_file, 235, 135, 45, 0, '');

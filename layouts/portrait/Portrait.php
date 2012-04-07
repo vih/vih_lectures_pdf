@@ -87,7 +87,7 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_Base
         $chart['#data'][] = '';
         $chart['#labels'][] = $tilmelding;
         
-        $qr_file = chart_copy($chart, 'my_chart_' . uniqid(), '/home/vih/vih.dk/sites/default/files/charts/');
+        $qr_file = chart_copy($chart, 'my_chart_' . uniqid(), 'public://charts/');
         
         if ($qr_file !== false) {
             $this->Image($qr_file, 4, 250, 35, 0, '');
