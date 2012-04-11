@@ -41,7 +41,7 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_Base
         $this->setY(60);
         $this->writeHtmlCell(190, 10, $this->GetX(), $this->GetY(), $this->description, 0);
         $this->Line(0, 245, 220, 245);
-        if (!empty($this->logo)) && file_exists($this->logo)) {
+        if (!empty($this->logo) && file_exists($this->logo)) {
           $this->Image($this->logo, 150, 255, 50, 0, '', 'http://vih.dk/');
         }
     }
@@ -96,7 +96,7 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_Base
             $this->Image($qr_file, 4, 250, 35, 0, '');
         }
 
-        if (!empty($this->logo)) && file_exists($this->logo)) {
+        if (!empty($this->logo) && file_exists($this->logo)) {
           $this->Image($this->logo, 150, 255, 50, 0, '', 'http://vih.dk/');
         }
         $x = 40;
