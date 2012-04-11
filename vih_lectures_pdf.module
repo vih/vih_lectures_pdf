@@ -16,6 +16,14 @@ function vih_lectures_pdf_menu() {
     'access arguments' => array(1),
     'type' => MENU_LOCAL_ACTION,    
 
+  );
+  $items['admin/vih/lectures'] = array(
+    'title' => 'Lectures',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('vih_lectures_pdf_admin_settings'),
+    'access arguments' => array('access content'),
+    'type' => MENU_NORMAL_ITEM,    
+
   );  
   return $items;
 }
@@ -27,9 +35,137 @@ function vih_lectures_pdf_access($node) {
   return true;
 }
 
+/**
+ * Implements hook_ctools_plugin_type().
+ *
+ * Has plenty options. See ctools/help/plugins-creating.html
+ */
+function vih_lectures_pdf_ctools_plugin_type() {
+  $plugins['layouts'] = array(
+    'use hooks' => TRUE,
+  );
+  return $plugins;
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function vih_lectures_pdf_ctools_plugin_directory($owner, $plugin) {
+  if (($owner == 'vih_lectures_pdf') && ($plugin == 'layouts')) {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Fetch metadata on a specific layout plugin.
+ *
+ * @param $layout
+ *   Name of a panel layout. If the layout name contains a ':' this
+ *   indicates that we need to separate the sublayout out and
+ *   load it individually.
+ *
+ * @return
+ *   An array with information about the requested panel layout.
+ */
+function vih_lectures_pdf_get_layout($layout) {
+  ctools_include('plugins');
+  return ctools_get_plugins('vih_lectures_pdf', 'layouts', $layout);
+}
+
+/**
+ * Fetch metadata for all layout plugins.
+ * 
+ * @param
+ *   string $id Optional plugin ID
+ *
+ * @return
+ *   An array of arrays with information about all available layouts.
+ */
+function vih_lectures_pdf_get_layouts($id = NULL) {
+  ctools_include('plugins');
+  return ctools_get_plugins('vih_lectures_pdf', 'layouts', $id);
+}
+
+function vih_lectures_pdf_layouts() {
+  return variable_get('vih_lectures_pdf_layout', 'landscape');
+}
+
+function vih_lectures_pdf_admin_settings() {
+  $options = array();
+  foreach (vih_lectures_pdf_get_layouts() as $key => $layout) {
+    $options[$key] = $key;
+  }
+  
+  $form = array();
+
+  $form['vih_lectures_pdf']['layout'] = array(
+    '#type' => 'select',
+    '#title' => t('Layout'),
+    '#default_value' => variable_get('vih_lectures_pdf_layout', 'portrait'),
+    '#options' => $options,
+    '#description' => t("Which layout do you wish to use?"),
+    '#required' => TRUE,
+  );
+
+  // Use the #managed_file FAPI element to upload an image file.
+  $form['vih_lectures_pdf']['logo'] = array(
+    '#title' => t('Logo'),
+    '#type' => 'managed_file',
+    '#description' => t('The uploaded image will be displayed on this page using the image style choosen below.'),
+    '#default_value' => variable_get('vih_lectures_pdf_logo', ''),
+    '#upload_location' => 'public://logo/',
+  );
+
+  $form['#submit'][] = 'vih_lectures_pdf_admin_settings_submit';
+  return system_settings_form($form);
+}
+
+function vih_lectures_pdf_admin_settings_validate($form, &$form_state) {
+  return true;
+}
+
+function vih_lectures_pdf_admin_settings_submit($form, &$form_state) {
+  variable_set('vih_lectures_pdf_layout', $form_state['values']['layout']);
+  
+  // @see http://drupal.org/node/1090198
+  global $user;
+  if (is_numeric($form_state['values']['logo']) && $form_state['values']['logo'] > 0) {
+    // Load the file via file.fid.
+    $file = file_load($form_state['values']['logo']);
+    if ($file) {
+      // Change status to permanent.
+      $file->status = FILE_STATUS_PERMANENT;
+      // Save.
+      file_save($file);
+      // Save file to variable.
+      variable_set('vih_lectures_pdf_logo', $file->fid);
+      // Record that the module (in this example, user module) is using the file. 
+      file_usage_add($file, 'vih_lectures_pdf', 'user', $user->uid);
+      // Unset formstate value.
+      unset($form_state['values']['logo']); // make sure it is unset before system submit
+    }
+  }
+  else {
+    // Load the file via file.fid.
+    $file = file_load(variable_get('vih_lectures_pdf_logo', ''));
+    
+    if ($file->fid) {
+      // Delete the file and the usage record
+      file_delete($file, TRUE);
+    }
+
+    variable_set('vih_lectures_pdf_logo', '');
+  }  
+}
+
 function vih_lectures_pdf_booklet($node) {
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
-  $pdf = new VIH_Lectures_Pdf_Portrait();
+  
+  $layout = variable_get('vih_lectures_pdf_layout', 'portrait');
+  ctools_include('Layout', 'vih_lectures_pdf', 'plugins/layouts/' . $layout);
+  
+  $class = 'VIH_Lectures_Pdf_' . ucfirst($layout);
+  $pdf = new $class();
   $pdf->setHeading($node->title);
   if ($node->type == 'vih_lectures') {
     $pdf->setSubTitle($node->field_subtitle['und'][0]['safe_value']);
@@ -37,7 +173,7 @@ function vih_lectures_pdf_booklet($node) {
     $file = drupal_realpath($node->field_picture['da'][0]['uri']);
 
     $pdf->addFrontpage($file);
-    foreach ($node->field_lectures['und'] AS $key => $value) {
+    foreach ($node->field_lectures['und'] as $key => $value) {
       $node = node_load($value['target_id']);
       if ($node) {
         $events[] = $node;
@@ -49,3 +185,4 @@ function vih_lectures_pdf_booklet($node) {
   
   $pdf->render($events);
 }
+
