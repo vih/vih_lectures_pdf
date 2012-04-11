@@ -16,15 +16,15 @@ class VIH_Lectures_Pdf_Landscape extends VIH_Lectures_Pdf_Base
     function __construct()
     {
         parent::__construct('L','mm','A4');
-        $this->logo = dirname(__FILE__) . '/../../../' . 'logo.jpg';
     }
     
     function addFrontpage($image)
     {
         $this->addPage();
 
-        $this->Image($this->logo, 100, 55, 100, 0, '', 'http://vih.dk/');
-
+        if (!empty($this->logo) && file_exists($this->logo)) {
+          $this->Image($this->logo, 100, 55, 100, 0, '', 'http://vih.dk/');
+        }
         $this->Image($image, 10, 10, 277,0,'');
         $this->SetFont('Helvetica', 'B', 35);
         $this->setTextColor(255, 255, 255);
@@ -88,9 +88,10 @@ class VIH_Lectures_Pdf_Landscape extends VIH_Lectures_Pdf_Base
         if ($qr_file !== false) {
             $this->Image($qr_file, 235, 135, 45, 0, '');
         }
-
-        $this->Image($this->logo, 235, 180, 50, 0, '', 'http://vih.dk/');
-
+        
+        if (!empty($this->logo) && file_exists($this->logo)) {
+          $this->Image($this->logo, 235, 180, 50, 0, '', 'http://vih.dk/');
+        }
         $this->setY(168);
         $this->SetFont('Helvetica', null, 14);
 

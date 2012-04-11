@@ -7,29 +7,31 @@ abstract class VIH_Lectures_Pdf_Base extends TCPDF {
   protected $sub_title = 'Kom og høre med!';
   protected $description = 'description';
   protected $logo;
-    
-  function setHeading($title)
-  {
+
+  /**
+   * @param string $logo Path to the logo
+   */  
+  function setLogo($logo) {
+    $this->logo = $logo;
+  }
+  
+  function setHeading($title) {
     $this->heading = $title;
   }
 
-  function setSubtitle($title)
-  {
+  function setSubtitle($title) {
     $this->sub_title = $title;
   }
 
-  function setDescription($desc)
-  {
+  function setDescription($desc) {
     $this->description = $desc;
   }
     
-  function Header()
-  {
+  function Header() {
     // left blank to remove line in header added by TCPDF
   }
     
-  function Footer()
-  {
+  function Footer() {
     // left blank to remove line in header added by TCPDF
   }
     
@@ -50,8 +52,7 @@ abstract class VIH_Lectures_Pdf_Base extends TCPDF {
   /**
    * @todo Should utilize Drupal own t()-function
    */
-  function t($phrase)
-  {
+  function t($phrase) {
     // Default to English
     $phrases = array(
       'Monday' => 'mandag',

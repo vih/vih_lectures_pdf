@@ -164,8 +164,14 @@ function vih_lectures_pdf_booklet($node) {
   $layout = variable_get('vih_lectures_pdf_layout', 'portrait');
   ctools_include('Layout', 'vih_lectures_pdf', 'plugins/layouts/' . $layout);
   
+  $file = file_load(variable_get('vih_lectures_pdf_logo', ''));  
   $class = 'VIH_Lectures_Pdf_' . ucfirst($layout);
+  
   $pdf = new $class();
+  if ($file) {
+    $pdf->setLogo(drupal_realpath($file->uri));
+  }
+
   $pdf->setHeading($node->title);
   if ($node->type == 'vih_lectures') {
     $pdf->setSubTitle($node->field_subtitle['und'][0]['safe_value']);

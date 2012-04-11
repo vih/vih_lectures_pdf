@@ -16,7 +16,6 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_Base
     function __construct()
     {
         parent::__construct('P','mm','A4');
-        $this->logo = dirname(__FILE__) . '/../../../logo.jpg';
     }
     
     function addFrontpage($image)
@@ -42,7 +41,9 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_Base
         $this->setY(60);
         $this->writeHtmlCell(190, 10, $this->GetX(), $this->GetY(), $this->description, 0);
         $this->Line(0, 245, 220, 245);
-        $this->Image($this->logo, 150, 255, 50, 0, '', 'http://vih.dk/');
+        if (!empty($this->logo)) && file_exists($this->logo)) {
+          $this->Image($this->logo, 150, 255, 50, 0, '', 'http://vih.dk/');
+        }
     }
 
     function addEventPage($event)
@@ -95,8 +96,9 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_Base
             $this->Image($qr_file, 4, 250, 35, 0, '');
         }
 
-        $this->Image($this->logo, 150, 255, 50, 0, '', 'http://vih.dk/');
-        
+        if (!empty($this->logo)) && file_exists($this->logo)) {
+          $this->Image($this->logo, 150, 255, 50, 0, '', 'http://vih.dk/');
+        }
         $x = 40;
         $this->setY(252);
         $this->setX($x);
