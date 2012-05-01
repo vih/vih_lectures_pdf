@@ -2,7 +2,6 @@
 require_once libraries_get_path('tcpdf') . '/tcpdf.php';
 
 abstract class VIH_Lectures_Pdf_Base extends TCPDF {
-  protected $pdf;
   protected $heading = 'Vejle Idrætshøjskoles foredrag';
   protected $sub_title = 'Kom og høre med!';
   protected $description = 'description';
