@@ -158,37 +158,38 @@ function vih_lectures_pdf_admin_settings_submit($form, &$form_state) {
   }  
 }
 
-function vih_lectures_pdf_booklet($node) {
+function vih_lectures_pdf_booklet($lecture) {
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
   
+  $events = array();
   $layout = variable_get('vih_lectures_pdf_layout', 'portrait');
   ctools_include('Layout', 'vih_lectures_pdf', 'plugins/layouts/' . $layout);
   
-  $file = file_load(variable_get('vih_lectures_pdf_logo', ''));  
   $class = 'VIH_Lectures_Pdf_' . ucfirst($layout);
-  
-  $pdf = new $class();
-  if ($file) {
-    $pdf->setLogo(drupal_realpath($file->uri));
-  }
 
-  $pdf->setHeading($node->title);
-  if ($node->type == 'vih_lectures') {
-    $pdf->setSubTitle($node->field_subtitle['und'][0]['safe_value']);
-    $pdf->setDescription($node->body['da'][0]['safe_value']);
-    $file = drupal_realpath($node->field_picture['da'][0]['uri']);
-
-    $pdf->addFrontpage($file);
-    foreach ($node->field_lectures['und'] as $key => $value) {
+  if ($lecture->type == 'vih_lectures') {
+    foreach ($lecture->field_lectures['und'] as $key => $value) {
       $node = node_load($value['target_id']);
       if ($node) {
         $events[] = $node;
       }
     }
   } else {
-    $events[] = $node;
+    $events[] = $lecture;
+  }  
+  $pdf = new $class($events);
+  $pdf->setHeading($lecture->title);
+  if ($logo = file_load(variable_get('vih_lectures_pdf_logo', ''))) {
+    $pdf->setLogo(drupal_realpath($logo->uri));
   }
-  
-  $pdf->render($events);
+  if ($lecture->type == 'vih_lectures') {
+    $pdf->setSubTitle($lecture->field_subtitle['und'][0]['safe_value']);
+    $pdf->setDescription($lecture->body['da'][0]['safe_value']);
+    $file = drupal_realpath($lecture->field_picture['da'][0]['uri']);
+    $pdf->addFrontpage($file);
+    $pdf->addSecondPage($file);
+  }
+  $pdf->render();
+  drupal_exit();
 }
 
