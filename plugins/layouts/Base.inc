@@ -43,11 +43,12 @@ abstract class VIH_Lectures_Pdf_Base extends TCPDF {
   function clearJavascript($s) {
     $do = true;
     while ($do) {
-      $start = stripos($s,'<script');
-      $stop = stripos($s,'</script>');
-      if ((is_numeric($start))&&(is_numeric($stop))) {
-        $s = substr($s,0,$start).substr($s,($stop+strlen('</script>')));
-      } else {
+      $start = stripos($s, '<script');
+      $stop = stripos($s, '</script>');
+      if ((is_numeric($start)) && (is_numeric($stop))) {
+        $s = substr($s, 0, $start) . substr($s, ($stop + strlen('</script>')));
+      } 
+      else {
         $do = false;
       }
     }
