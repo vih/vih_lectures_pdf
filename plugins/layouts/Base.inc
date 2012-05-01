@@ -8,10 +8,6 @@ abstract class VIH_Lectures_Pdf_Base extends TCPDF {
   protected $logo;
   protected $events;
 
-  function __construct($events) {
-    $this->events = $events;
-  }
-
   /**
    * @param string $logo Path to the logo
    */  
@@ -53,6 +49,72 @@ abstract class VIH_Lectures_Pdf_Base extends TCPDF {
     }
     return trim($s);
   }
+
+  /**
+   * @todo Should utilize Drupal own t()-function
+   */
+  protected function t($phrase) {
+    // Default to English
+    $phrases = array(
+      'Monday' => 'mandag',
+      'Tuesday' => 'tirsdag',
+      'Wednesday' => 'onsdag',
+      'Thursday' => 'torsdag',
+      'Friday' => 'fredag',
+      'Saturday' => 'lørdag',
+      'Sunday' => 'søndag',
+      'January' => 'januar',
+      'February' => 'februar',
+      'March' => 'marts',
+      'April' => 'april',
+      'May' => 'maj',
+      'June' => 'juni',
+      'July' => 'juli',
+      'August' => 'august',
+      'September' => 'september',
+      'October' => 'oktober',
+      'November' => 'november',
+      'December' => 'december',
+      '1' => 'januar',
+      '2' => 'februar',
+      '3' => 'marts',
+      '4' => 'april',
+      '5' => 'maj',
+      '6' => 'juni',
+      '7' => 'juli',
+      '8' => 'august',
+      '9' => 'september',
+      '10' => 'oktober',
+      '11' => 'november',
+      '12' => 'december'
+    );
+    if (!empty($phrases[$phrase])) {
+      return $phrases[$phrase];
+    }
+    return $phrase;
+  }
   
   abstract public function render();
+  
+  /**
+   * Gets barcode file path
+   *
+   * @param string $url Registration url
+   * @param integer $height Height
+   * @param integer $width Width
+   *
+   * @return string or false
+   */
+  protected function getBarcodePath($url, $height, $width) {
+    $chart = array(
+      '#chart_id' => 'test_chart',
+      '#type' => CHART_TYPE_QR,
+      '#size' => chart_size(200, 200) 
+    );
+        
+    $chart['#data'][] = '';
+    $chart['#labels'][] = $url;
+        
+    return chart_copy($chart, 'my_chart_' . uniqid(), 'public://charts/');
+  }
 }
