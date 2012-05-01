@@ -7,6 +7,11 @@ abstract class VIH_Lectures_Pdf_Base extends TCPDF {
   protected $sub_title = 'Kom og høre med!';
   protected $description = 'description';
   protected $logo;
+  protected $events;
+
+  function __construct($events) {
+    $this->events = $events;
+  }
 
   /**
    * @param string $logo Path to the logo
@@ -92,4 +97,6 @@ abstract class VIH_Lectures_Pdf_Base extends TCPDF {
     }
     return $phrase;
   }
+  
+  abstract public function render();
 }
