@@ -53,50 +53,6 @@ abstract class VIH_Lectures_Pdf_Base extends TCPDF {
     }
     return trim($s);
   }
-    
-  /**
-   * @todo Should utilize Drupal own t()-function
-   */
-  function t($phrase) {
-    // Default to English
-    $phrases = array(
-      'Monday' => 'mandag',
-      'Tuesday' => 'tirsdag',
-      'Wednesday' => 'onsdag',
-      'Thursday' => 'torsdag',
-      'Friday' => 'fredag',
-      'Saturday' => 'lørdag',
-      'Sunday' => 'søndag',
-      'January' => 'januar',
-      'February' => 'februar',
-      'March' => 'marts',
-      'April' => 'april',
-      'May' => 'maj',
-      'June' => 'juni',
-      'July' => 'juli',
-      'August' => 'august',
-      'September' => 'september',
-      'October' => 'oktober',
-      'November' => 'november',
-      'December' => 'december',
-      '1' => 'januar',
-      '2' => 'februar',
-      '3' => 'marts',
-      '4' => 'april',
-      '5' => 'maj',
-      '6' => 'juni',
-      '7' => 'juli',
-      '8' => 'august',
-      '9' => 'september',
-      '10' => 'oktober',
-      '11' => 'november',
-      '12' => 'december'
-    );
-    if (!empty($phrases[$phrase])) {
-      return $phrases[$phrase];
-    }
-    return $phrase;
-  }
   
   abstract public function render();
 }
