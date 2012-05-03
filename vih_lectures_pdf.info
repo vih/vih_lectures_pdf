@@ -8,4 +8,6 @@ dependencies[] = libraries
 dependencies[] = ctools
 dependencies[] = vih_lectures
 
+configure = admin/config/vih/lectures
+
 files[] = drush/vih_lectures_pdf.drush.inc
