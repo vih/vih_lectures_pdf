@@ -72,7 +72,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->SetFont($this->frontpage_font, 'B', 40);
     $this->MultiCell(0, 0, $this->sub_title, null, 'C');
     if (!empty($this->logo) && file_exists($this->logo)) {
-      $this->Image($this->logo, 55, 230, 100, 0, '', 'http://vih.dk/');
+      $this->Image($this->logo, 55, 230, 100, 0, '', $this->link);
     }
   }
 
@@ -89,7 +89,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->writeHtmlCell(190, 10, $this->GetX(), $this->GetY(), $this->description, 0);
     $this->Line(0, 245, 220, 245);
     if (!empty($this->logo) && file_exists($this->logo)) {
-      $this->Image($this->logo, 150, 255, 50, 0, '', 'http://vih.dk/');
+      $this->Image($this->logo, 150, 255, 50, 0, '', $this->link);
     }
   }
 
@@ -102,7 +102,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $picture_filename = drupal_realpath(image_style_path('sidepicture', $picture[0]['uri']));
     $location = trim($event->field_location['und'][0]['safe_value']);
     $price = trim($event->field_price['und'][0]['value']);
-    $tilmelding = 'http://vih.dk/node/' . $event->nid;
+    $tilmelding = $this->base_url . '/node/' . $event->nid;
     $start_date = new DateTime($event->field_date['und'][0]['value'], new DateTimeZone($event->field_date['und'][0]['timezone']));
     $end_date = new DateTime($event->field_date['und'][0]['value2'], new DateTimeZone($event->field_date['und'][0]['timezone']));
     $date = ucfirst($this->t($start_date->format('l')) . ', ' . $start_date->format('j.') . $this->t($start_date->format('F')) . ', ' . $start_date->format('Y H:i') . '-' . $end_date->format('H:i'));
@@ -132,7 +132,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
       $this->Image($qr_file, 4, 250, 35, 0, '');
     }
     if (!empty($this->logo) && file_exists($this->logo)) {
-      $this->Image($this->logo, 150, 255, 50, 0, '', 'http://vih.dk/');
+      $this->Image($this->logo, 150, 255, 50, 0, '', $this->link);
     }
     $x = 40;
     $this->setY(252);
@@ -157,7 +157,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
   public function render() {
     $this->SetTitle($this->heading);
     $this->SetSubject($this->sub_title);
-    $this->SetAuthor('Vejle Idrætshøjskole');
+    $this->SetAuthor($this->author);
     $this->SetAutoPageBreak(false);
     foreach ($this->events as $event) {
       $this->addEventPage($event);
