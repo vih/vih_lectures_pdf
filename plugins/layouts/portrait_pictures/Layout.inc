@@ -29,21 +29,25 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
 
     $no_of_events = count($this->events);
 
-    if ($no_of_events <= 6) {
-      $x = 10;
+    $start_x = 15;
+    if ($no_of_events >= 6) {
+      $x = $start_x;
       $y = $this->getY() + 5;
       $i = 0;
+      $j = 1;
       $img_size = 60;
       foreach ($this->events as $event) {
         $picture = field_get_items('node', $event, 'field_picture');
         $picture_filename = drupal_realpath(image_style_path('square_thumbnail', $picture[0]['uri']));
         $this->Image($picture_filename, $x, $y, $img_size, 0, '');
         $x += 60;
-        if ($i > 3) {
+        if ($j >= 3) {
           $y += $img_size;
-          $x = 10;
+          $x = $start_x;
+          $j = 0;
         }
         $i++;
+        $j++;
         if ($no_of_events > 6 && $no_of_events < 9 && $i == 6) {
           break;
         }
@@ -68,11 +72,11 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
       $this->setY($this->getY() + 125);
     }
     
-    $this->setY($this->getY() + 10);
-    $this->SetFont($this->frontpage_font, 'B', 40);
+    $this->setY($this->getY() + 5);
+    $this->SetFont($this->frontpage_font, 'B', 30);
     $this->MultiCell(0, 0, $this->sub_title, null, 'C');
     if (!empty($this->logo) && file_exists($this->logo)) {
-      $this->Image($this->logo, 55, 230, 100, 0, '', $this->link);
+      $this->Image($this->logo, 55, 240, 90, 0, '', $this->link);
     }
   }
 
