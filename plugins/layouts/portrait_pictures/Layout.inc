@@ -31,37 +31,47 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
 
     $start_x = 15;
     if ($no_of_events >= 6) {
+
+      // edit settings
+      $img_size = 45;
+      $pictures_pr_row = 4;
+      $max_rows = 4;
+
+      $row_count = 0;
       $x = $start_x;
       $y = $this->getY() + 5;
       $i = 0;
       $j = 1;
-      $img_size = 60;
+      
+      $rows = $no_of_events / $pictures_pr_row;
+      if (floor($rows) > $max_rows) {
+        $rows = $max_rows;
+      }
+      
       foreach ($this->events as $event) {
         $picture = field_get_items('node', $event, 'field_picture');
         $picture_filename = drupal_realpath(image_style_path('square_thumbnail', $picture[0]['uri']));
         if (file_exists($picture_filename)) {
           $this->Image($picture_filename, $x, $y, $img_size, 0, '');
         }
-        $x += 60;
-        if ($j >= 3) {
+        $x += $img_size;
+        if ($j >= $pictures_pr_row) {
           $y += $img_size;
           $x = $start_x;
           $j = 0;
+          $row_count++;
         }
         $i++;
         $j++;
-        if ($no_of_events > 6 && $no_of_events < 9 && $i == 6) {
-          break;
-        }
-        elseif ($no_of_events > 9 && $no_of_events < 12 && $i == 9) {
-          break;
-        }
-        elseif ($i >= 9) {
+        if ($row_count > $rows) {
           break;
         }
       }
-      if ($i <= 3) {
-        $this->setY($this->getY() + $img_size + 10);
+      if ($i <= $pictures_pr_row) {
+        $this->setY($this->getY() + $img_size + 5);
+      }
+      elseif ($rows != floor($rows)) {
+        $this->setY($y + $img_size + 5);
       }
       else {
         $this->setY($y);
