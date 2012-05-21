@@ -39,7 +39,9 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
       foreach ($this->events as $event) {
         $picture = field_get_items('node', $event, 'field_picture');
         $picture_filename = drupal_realpath(image_style_path('square_thumbnail', $picture[0]['uri']));
-        $this->Image($picture_filename, $x, $y, $img_size, 0, '');
+        if (file_exists($picture_filename)) {
+          $this->Image($picture_filename, $x, $y, $img_size, 0, '');
+        }
         $x += 60;
         if ($j >= 3) {
           $y += $img_size;
@@ -68,7 +70,9 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     }
     else {
       $this->setY($this->getY() + 5);
-      $this->Image($image, 10, $this->getY(), 190, 0, '');
+      if (file_exists($image)) {
+        $this->Image($image, 10, $this->getY(), 190, 0, '');
+      }
       $this->setY($this->getY() + 125);
     }
     
@@ -127,12 +131,12 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->Line(0, 245, 220, 245);
     $this->Line(220, 40, 220, 220);
 
-    if ($picture_filename) {
+    if (file_exists($picture_filename)) {
       $this->Image($picture_filename, 150, 5, 0, 75, '');
     }
 
     $qr_file = $this->getBarcodePath($tilmelding, 200, 200);
-    if ($qr_file !== false) {
+    if ($qr_file !== false && file_exists($qr_file)) {
       $this->Image($qr_file, 4, 250, 35, 0, '');
     }
     if (!empty($this->logo) && file_exists($this->logo)) {
