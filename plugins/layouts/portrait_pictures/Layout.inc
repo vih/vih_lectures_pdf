@@ -150,7 +150,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
       $this->Image($qr_file, 4, 250, 35, 0, '');
     }
     if (!empty($this->logo) && file_exists($this->logo)) {
-      $this->Image($this->logo, 150, 255, 50, 0, '', $this->link);
+      $this->Image($this->logo, 151, 260, 50, 0, '', $this->link);
     }
     $x = 40;
     $this->setY(252);
