@@ -14,8 +14,15 @@ function vih_lectures_pdf_menu() {
     'page arguments' => array(1),
     'access callback' => 'vih_lectures_pdf_access',
     'access arguments' => array(1),
-    'type' => MENU_LOCAL_ACTION,    
-
+    'type' => MENU_LOCAL_ACTION,
+  );
+  $items['node/%node/poster'] = array(
+    'title' => 'Plakat',
+    'page callback' => 'vih_lectures_pdf_poster',
+    'page arguments' => array(1),
+    'access callback' => 'vih_lectures_pdf_poster_access',
+    'access arguments' => array(1),
+    'type' => MENU_LOCAL_ACTION,
   );
   $items['admin/config/vih/lectures'] = array(
     'title' => 'Lectures',
@@ -31,6 +38,13 @@ function vih_lectures_pdf_menu() {
 
 function vih_lectures_pdf_access($node) {
   if ($node->type != 'vih_lectures' AND $node->type != 'vih_lecture') {
+    return false;
+  }
+  return true;
+}
+
+function vih_lectures_pdf_poster_access($node) {
+  if ($node->type != 'vih_lectures') {
     return false;
   }
   return true;
@@ -207,3 +221,32 @@ function vih_lectures_pdf_booklet($lecture) {
   drupal_exit();
 }
 
+function vih_lectures_pdf_poster($lecture) {
+  require_once libraries_get_path('tcpdf') . '/tcpdf.php';
+  global $base_url;
+  $events = array();
+  $layout = variable_get('vih_lectures_pdf_poster_layout', 'portrait_a3');
+  ctools_include('Layout', 'vih_lectures_pdf', 'plugins/posters/' . $layout);
+  
+  $class = 'VIH_Lectures_Pdf_Poster_' . ucfirst($layout);
+
+  foreach ($lecture->field_lectures['und'] as $key => $value) {
+    $node = node_load($value['target_id']);
+    if ($node) {
+      $events[] = $node;
+    }
+  }
+ 
+  $pdf = new $class($events, $image);
+  $pdf->setBaseUrl($base_url);
+  $pdf->setHeading($lecture->title);
+  $pdf->setAuthor(variable_get('site_name', "Vejle Idrætshøjskole"));
+  if ($logo = file_load(variable_get('vih_lectures_pdf_logo', ''))) {
+    $pdf->setLogo(drupal_realpath($logo->uri));
+  }
+  $pdf->setSubTitle($lecture->field_subtitle['und'][0]['safe_value']);
+  $pdf->setDescription($lecture->body['da'][0]['safe_value']);
+  $file = drupal_realpath($lecture->field_picture['da'][0]['uri']);
+  $pdf->render();
+  drupal_exit();
+}
