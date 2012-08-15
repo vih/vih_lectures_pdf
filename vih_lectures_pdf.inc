@@ -1,14 +1,14 @@
 <?php
 /**
-Title - should be a specific node
-Subtitle - should be a specific node
-Frontpage - picture - should be a node
-Lectures could be attached by entity reference
-
-Pdf of single lectures
-Pdf of all lectures in a view
-Pdf of specific lectures with frontpage etc
-**/
+ * Title - should be a specific node
+ * Subtitle - should be a specific node
+ * Frontpage - picture - should be a node
+ * Lectures could be attached by entity reference
+ *
+ * Pdf of single lectures
+ * Pdf of all lectures in a view
+ * Pdf of specific lectures with frontpage etc
+ */
 class VIH_Lectures_Pdf extends TCPDF
 {
     protected $pdf;

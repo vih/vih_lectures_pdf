@@ -2,10 +2,11 @@
 
 /**
  * @file
- *   drush integration for views_infinite_scroll.
+ *
+ * drush integration for views_infinite_scroll.
  */
- 
-define('TCPDF_DOWNLOAD_URI', 'http://downloads.sourceforge.net/project/tcpdf/tcpdf_5_9_144.zip'); 
+
+define('TCPDF_DOWNLOAD_URI', 'http://downloads.sourceforge.net/project/tcpdf/tcpdf_5_9_144.zip');
 
 /**
  * Implements hook_drush_command().
@@ -19,7 +20,7 @@ define('TCPDF_DOWNLOAD_URI', 'http://downloads.sourceforge.net/project/tcpdf/tcp
  *
  * @See drush_parse_command() for a list of recognized keys.
  *
- * @return
+ * @return array
  *   An associative array describing your command(s).
  */
 function vih_lectures_pdf_drush_command() {
@@ -38,10 +39,10 @@ function vih_lectures_pdf_drush_command() {
  * This function is called whenever a drush user calls
  * 'drush help <name-of-your-command>'
  *
- * @param
+ * @param string
  *   A string with the help section (prepend with 'drush:')
  *
- * @return
+ * @return string
  *   A string with the help text for your command.
  */
 function vih_lectures_pdf_drush_help($section) {
@@ -60,7 +61,6 @@ function vih_lectures_pdf_drush_help($section) {
  * any functions you have added in your own modules/themes.
  *
  * To print something to the terminal window, use drush_print().
- *
  */
 
 /**
@@ -92,11 +92,11 @@ function vih_lectures_pdf_drush_tcpdf_download() {
   $filename = basename(TCPDF_DOWNLOAD_URI);
   $dirname = 'tcpdf';
 
-  // Remove any existing directory
+  // Remove any existing directory.
   if (is_dir($dirname)) {
     drush_log(dt('An existing TCPDF library was overwritten at @path', array('@path' => $path)), 'notice');
   }
-  // Remove any existing zip archive
+  // Remove any existing zip archive.
   if (is_file($filename)) {
     drush_op('unlink', $filename);
   }

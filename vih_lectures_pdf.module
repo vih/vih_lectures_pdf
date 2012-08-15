@@ -7,7 +7,7 @@
 * Implements hook_menu().
 */
 function vih_lectures_pdf_menu() {
-  $items = array();  
+  $items = array();
   $items['node/%node/pdf'] = array(
     'title' => 'PDF',
     'page callback' => 'vih_lectures_pdf_booklet',
@@ -30,27 +30,34 @@ function vih_lectures_pdf_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('vih_lectures_pdf_admin_settings'),
     'access arguments' => array('access content'),
-    'type' => MENU_NORMAL_ITEM,    
-
-  );  
+    'type' => MENU_NORMAL_ITEM,
+  );
   return $items;
 }
 
+/**
+ * Access check for a pdf for lectures.
+ */
 function vih_lectures_pdf_access($node) {
   if ($node->type != 'vih_lectures' AND $node->type != 'vih_lecture') {
-    return false;
+    return FALSE;
   }
-  return true;
-}
-
-function vih_lectures_pdf_poster_access($node) {
-  if ($node->type != 'vih_lectures') {
-    return false;
-  }
-  return true;
+  return TRUE;
 }
 
 /**
+ * Access check for for the posters.
+ */
+function vih_lectures_pdf_poster_access($node) {
+  if ($node->type != 'vih_lectures') {
+    return FALSE;
+  }
+  return TRUE;
+}
+
+/**
+ * Plugin for the PDF printouts
+ *
  * Implements hook_ctools_plugin_type().
  *
  * Has plenty options. See ctools/help/plugins-creating.html
@@ -74,12 +81,12 @@ function vih_lectures_pdf_ctools_plugin_directory($owner, $plugin) {
 /**
  * Fetch metadata on a specific layout plugin.
  *
- * @param $layout
+ * @param string $layout
  *   Name of a panel layout. If the layout name contains a ':' this
  *   indicates that we need to separate the sublayout out and
  *   load it individually.
  *
- * @return
+ * @return array
  *   An array with information about the requested panel layout.
  */
 function vih_lectures_pdf_get_layout($layout) {
@@ -93,7 +100,7 @@ function vih_lectures_pdf_get_layout($layout) {
  * @param
  *   string $id Optional plugin ID
  *
- * @return
+ * @return array
  *   An array of arrays with information about all available layouts.
  */
 function vih_lectures_pdf_get_layouts($id = NULL) {
@@ -101,10 +108,16 @@ function vih_lectures_pdf_get_layouts($id = NULL) {
   return ctools_get_plugins('vih_lectures_pdf', 'layouts', $id);
 }
 
+/**
+ * Returns pdf layouts plugin.
+ */
 function vih_lectures_pdf_layouts() {
   return variable_get('vih_lectures_pdf_layout', 'landscape');
 }
 
+/**
+ * implements hook_admin_settings().
+ */
 function vih_lectures_pdf_admin_settings() {
   global $base_url;
   $options = array();
@@ -145,10 +158,16 @@ function vih_lectures_pdf_admin_settings() {
   return system_settings_form($form);
 }
 
+/**
+ * Implements hook_admin_settings_validate().
+ */
 function vih_lectures_pdf_admin_settings_validate($form, &$form_state) {
-  return true;
+  return TRUE;
 }
 
+/**
+ * Implements hook_admin_settings_submit().
+ */
 function vih_lectures_pdf_admin_settings_submit($form, &$form_state) {
   variable_set('vih_lectures_pdf_layout', $form_state['values']['layout']);
   variable_set('vih_lectures_pdf_link', $form_state['values']['link']);
@@ -184,6 +203,9 @@ function vih_lectures_pdf_admin_settings_submit($form, &$form_state) {
   }  
 }
 
+/**
+ * Creates a booklet for a lecture or lectures.
+ */
 function vih_lectures_pdf_booklet($lecture) {
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
   global $base_url;
@@ -221,13 +243,16 @@ function vih_lectures_pdf_booklet($lecture) {
   drupal_exit();
 }
 
+/**
+ * Creates a poster for lectures.
+ */
 function vih_lectures_pdf_poster($lecture) {
   require_once libraries_get_path('tcpdf') . '/tcpdf.php';
   global $base_url;
   $events = array();
   $layout = variable_get('vih_lectures_pdf_poster_layout', 'portrait_a3');
   ctools_include('Layout', 'vih_lectures_pdf', 'plugins/posters/' . $layout);
-  
+
   $class = 'VIH_Lectures_Pdf_Poster_' . ucfirst($layout);
 
   foreach ($lecture->field_lectures['und'] as $key => $value) {
@@ -236,7 +261,7 @@ function vih_lectures_pdf_poster($lecture) {
       $events[] = $node;
     }
   }
- 
+
   $pdf = new $class($events, $image);
   $pdf->setBaseUrl($base_url);
   $pdf->setHeading($lecture->title);
