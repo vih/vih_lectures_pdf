@@ -1,14 +1,7 @@
 <?php
 /**
-Title - should be a specific node
-Subtitle - should be a specific node
-Frontpage - picture - should be a node
-Lectures could be attached by entity reference
-
-Pdf of single lectures
-Pdf of all lectures in a view
-Pdf of specific lectures with frontpage etc
-**/
+ * @file
+ */
 require_once dirname(__FILE__) . '/../Base.inc';
 
 class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_Base {

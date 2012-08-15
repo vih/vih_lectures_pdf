@@ -1,6 +1,6 @@
 <?php
 
-// Plugin definition
+// Plugin definition.
 $plugin = array(
   'title' => t('Landscape'),
   'category' => t('VIH'),
