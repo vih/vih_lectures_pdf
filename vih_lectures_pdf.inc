@@ -1,5 +1,10 @@
 <?php
 /**
+ * @file
+ * Include for PDF lectures.
+ */
+
+/**
  * Title - should be a specific node
  * Subtitle - should be a specific node
  * Frontpage - picture - should be a node
