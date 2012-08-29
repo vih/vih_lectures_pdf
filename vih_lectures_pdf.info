@@ -11,3 +11,10 @@ dependencies[] = vih_lectures
 configure = admin/config/vih/lectures
 
 files[] = drush/vih_lectures_pdf.drush.inc
+
+
+; Information added by drush on 2012-08-29
+version = "unknown"
+project = "vih"
+datestamp = "1346221374"
+
