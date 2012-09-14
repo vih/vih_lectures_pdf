@@ -90,7 +90,7 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
     }
 
     if (file_exists(dirname(__FILE__) . '/fof-logo.jpg')) {
-      $this->Image(dirname(__FILE__) . '/fof-logo.jpg'), 15, 300, 60, 0, '', 'http://fof-vejle.dk');
+      $this->Image(dirname(__FILE__) . '/fof-logo.jpg', 15, 300, 60, 0, '', 'http://fof-vejle.dk');
     }
     $this->setY($this->getY() + 10);
     /*
