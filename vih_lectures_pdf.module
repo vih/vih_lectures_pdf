@@ -1,11 +1,12 @@
 <?php
 /**
  * @file
+ * Code for the PDF for the lectures
  */
 
 /**
-* Implements hook_menu().
-*/
+ * Implements hook_menu().
+ */
 function vih_lectures_pdf_menu() {
   $items = array();
   $items['node/%node/pdf'] = array(
@@ -56,7 +57,7 @@ function vih_lectures_pdf_poster_access($node) {
 }
 
 /**
- * Plugin for the PDF printouts
+ * Plugin for the PDF printouts.
  *
  * Implements hook_ctools_plugin_type().
  *
@@ -116,7 +117,7 @@ function vih_lectures_pdf_layouts() {
 }
 
 /**
- * implements hook_admin_settings().
+ * Implements hook_admin_settings().
  */
 function vih_lectures_pdf_admin_settings() {
   global $base_url;
@@ -171,8 +172,8 @@ function vih_lectures_pdf_admin_settings_validate($form, &$form_state) {
 function vih_lectures_pdf_admin_settings_submit($form, &$form_state) {
   variable_set('vih_lectures_pdf_layout', $form_state['values']['layout']);
   variable_set('vih_lectures_pdf_link', $form_state['values']['link']);
-  
-  // @see http://drupal.org/node/1090198
+
+  // @see http://drupal.org/node/1090198.
   global $user;
   if (is_numeric($form_state['values']['logo']) && $form_state['values']['logo'] > 0) {
     // Load the file via file.fid.
@@ -186,8 +187,8 @@ function vih_lectures_pdf_admin_settings_submit($form, &$form_state) {
       variable_set('vih_lectures_pdf_logo', $file->fid);
       // Record that the module (in this example, user module) is using the file. 
       file_usage_add($file, 'vih_lectures_pdf', 'user', $user->uid);
-      // Unset formstate value.
-      unset($form_state['values']['logo']); // make sure it is unset before system submit
+      // Unset formstate value - make sure it is unset before system submit
+      unset($form_state['values']['logo']);
     }
   }
   else {
@@ -212,7 +213,7 @@ function vih_lectures_pdf_booklet($lecture) {
   $events = array();
   $layout = variable_get('vih_lectures_pdf_layout', 'portrait');
   ctools_include('Layout', 'vih_lectures_pdf', 'plugins/layouts/' . $layout);
-  
+
   $class = 'VIH_Lectures_Pdf_' . ucfirst($layout);
 
   if ($lecture->type == 'vih_lectures') {
@@ -222,9 +223,10 @@ function vih_lectures_pdf_booklet($lecture) {
         $events[] = $node;
       }
     }
-  } else {
+  } 
+  else {
     $events[] = $lecture;
-  }  
+  } 
   $pdf = new $class($events);
   $pdf->setBaseUrl($base_url);
   $pdf->setHeading($lecture->title);
