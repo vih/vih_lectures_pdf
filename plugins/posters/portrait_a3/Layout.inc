@@ -86,11 +86,11 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
     $this->SetFont($this->frontpage_font, 'B', 30);
     $this->MultiCell(0, 0, $this->sub_title, null, 'C');
     if (!empty($this->logo) && file_exists($this->logo)) {
-      $this->Image($this->logo, 120, 300, 80, 0, '', $this->link);
+      $this->Image($this->logo, 150, 350, 80, 0, '', $this->link);
     }
 
     if (file_exists(dirname(__FILE__) . '/fof-logo.jpg')) {
-      $this->Image(dirname(__FILE__) . '/fof-logo.jpg', 15, 300, 60, 0, '', 'http://fof-vejle.dk');
+      $this->Image(dirname(__FILE__) . '/fof-logo.jpg', 15, 350, 50, 0, '', 'http://fof-vejle.dk');
     }
     $this->setY($this->getY() + 10);
     /*
@@ -107,7 +107,7 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
     $start_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
     $end_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value2'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
     $date = ucfirst($this->t($start_date->format('l')) . ', ' . $start_date->format('j.') . $this->t($start_date->format('F')) . ', ' . $start_date->format('Y H:i') . '-' . $end_date->format('H:i'));
-    $date = format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value']) + $start_date->getOffset(), 'custom', 'j. F, Y H:i', date_default_timezone_get());
+    $date = format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value']) + $start_date->getOffset(), 'custom', 'j/m, H:i', date_default_timezone_get());
 
     $this->SetFont($this->font, 'N', 18);
     $this->setY($this->getY());
