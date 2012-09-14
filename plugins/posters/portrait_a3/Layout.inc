@@ -86,11 +86,11 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
     $this->SetFont($this->frontpage_font, 'B', 30);
     $this->MultiCell(0, 0, $this->sub_title, null, 'C');
     if (!empty($this->logo) && file_exists($this->logo)) {
-      $this->Image($this->logo, 150, 350, 80, 0, '', $this->link);
+      $this->Image($this->logo, 190, 370, 80, 0, '', $this->link);
     }
 
     if (file_exists(dirname(__FILE__) . '/fof-logo.jpg')) {
-      $this->Image(dirname(__FILE__) . '/fof-logo.jpg', 15, 350, 50, 0, '', 'http://fof-vejle.dk');
+      $this->Image(dirname(__FILE__) . '/fof-logo.jpg', 10, 370, 50, 0, '', 'http://fof-vejle.dk');
     }
     $this->setY($this->getY() + 10);
     /*
@@ -111,7 +111,7 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
 
     $this->SetFont($this->font, 'N', 18);
     $this->setY($this->getY());
-    $this->MultiCell(260, 0, $date . ': ' . $speaker . ' - ' . $title, null, 'L');
+    $this->MultiCell(270, 0, $date . ': ' . $speaker . ' - ' . $title, null, 'L');
   }
 
   /**
