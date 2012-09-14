@@ -2,6 +2,7 @@
 /**
  * @file
  */
+
 require_once dirname(__FILE__) . '/../Base.inc';
 
 class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
@@ -9,6 +10,7 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
   protected $font = 'dejavusans';
   protected $frontpage_font = 'dejavusans';
   protected $image;
+  protected $uri = 'vih.dk/foredrag';
 
   function __construct($events, $image = null) {
     $this->events = $events;
@@ -28,8 +30,8 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
     if ($no_of_events >= 6) {
 
       // edit settings
-      $img_size = 60;
-      $pictures_pr_row = 4;
+      $img_size = 50;
+      $pictures_pr_row = 5;
       $max_rows = 3;
 
       $row_count = 0;
@@ -86,38 +88,26 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
     if (!empty($this->logo) && file_exists($this->logo)) {
       $this->Image($this->logo, 55, 240, 90, 0, '', $this->link);
     }
+
+    /*
+    $qr_file = $this->getBarcodePath('http://' . $this->uri, 200, 200);
+    if ($qr_file !== false && file_exists($qr_file)) {
+      $this->Image($qr_file, 4, 250, 35, 0, '');
+    }
+    */ 
   }
 
   function addEvent($event) {
     $title = check_plain($event->title);
-    $speaker = trim($event->field_speaker['und'][0]['value']);
-    $body_field = field_get_items('node', $event, 'body');
-    $body = check_markup($this->clearJavascript($body_field[0]['safe_value']), 'filtered_html');
-    $picture = field_get_items('node', $event, 'field_picture');
-    $picture_filename = drupal_realpath(image_style_path('sidepicture', $picture[0]['uri']));
-    $location = trim($event->field_location['und'][0]['safe_value']);
-    $price = trim($event->field_price['und'][0]['value']);
-    $tilmelding = $this->base_url . '/node/' . $event->nid;
-    $start_date = new DateTime($event->field_date['und'][0]['value'], new DateTimeZone($event->field_date['und'][0]['timezone']));
-    $end_date = new DateTime($event->field_date['und'][0]['value2'], new DateTimeZone($event->field_date['und'][0]['timezone']));
+    $speaker = trim($event->field_speaker[LANGUAGE_NONE][0]['value']);
+    $start_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
+    $end_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value2'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
     $date = ucfirst($this->t($start_date->format('l')) . ', ' . $start_date->format('j.') . $this->t($start_date->format('F')) . ', ' . $start_date->format('Y H:i') . '-' . $end_date->format('H:i'));
-    $date = format_date(strtotime($event->field_date['und'][0]['value']) + $start_date->getOffset(), 'custom', 'l, j. F, Y H:i', date_default_timezone_get()) . '-' . format_date(strtotime($event->field_date['und'][0]['value2']) + $end_date->getOffset(), 'custom', 'H:i', date_default_timezone_get());
+    $date = format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value']) + $start_date->getOffset(), 'custom', 'l, j. F, Y H:i', date_default_timezone_get()) . '-' . format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value2']) + $end_date->getOffset(), 'custom', 'H:i', date_default_timezone_get());
 
-    $this->SetFont($this->font, 'B', 22);
+    $this->SetFont($this->font, 'N', 18);
     $this->setY($this->getY());
-    $this->Cell(150, 0, $speaker, null, 2, 'L');
-    $this->SetFont($this->font, 'B', 34);
-    $this->MultiCell(130, 0, $title, null, 'L');
-    $this->SetFont($this->font, null, 18);
-    $this->setTextColor(0, 0, 0);
-
-    $qr_file = $this->getBarcodePath('http://vih.dk/foredrag', 200, 200);
-    if ($qr_file !== false && file_exists($qr_file)) {
-      $this->Image($qr_file, 4, 250, 35, 0, '');
-    }
-    if (!empty($this->logo) && file_exists($this->logo)) {
-      $this->Image($this->logo, 150, 255, 50, 0, '', $this->link);
-    }
+    $this->MultiCell(130, 0, $date . ' ' . $speaker . ': ' . $title, null, 'L');
   }
 
   /**
