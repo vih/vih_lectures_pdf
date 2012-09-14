@@ -30,7 +30,7 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
     if ($no_of_events >= 6) {
 
       // edit settings
-      $img_size = 50;
+      $img_size = 52;
       $pictures_pr_row = 5;
       $max_rows = 3;
 
@@ -86,7 +86,7 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
     $this->SetFont($this->frontpage_font, 'B', 30);
     $this->MultiCell(0, 0, $this->sub_title, null, 'C');
     if (!empty($this->logo) && file_exists($this->logo)) {
-      $this->Image($this->logo, 190, 370, 80, 0, '', $this->link);
+      $this->Image($this->logo, 195, 370, 80, 0, '', $this->link);
     }
 
     if (file_exists(dirname(__FILE__) . '/fof-logo.jpg')) {
