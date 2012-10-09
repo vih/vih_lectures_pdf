@@ -1,0 +1,93 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  vih_lectures_pdf.module: n/a
+#  vih_lectures_pdf.info: n/a
+#  plugins/layouts/landscape/landscape.inc: n/a
+#  plugins/layouts/portrait/portrait.inc: n/a
+#  plugins/layouts/portrait_pictures/portrait_pictures.inc: n/a
+#  plugins/posters/portrait_a3/portrait_a3.inc: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2012-10-09 13:37+0200\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: vih_lectures_pdf.module:133
+msgid "Layout"
+msgstr ""
+
+#: vih_lectures_pdf.module:136
+msgid "Which layout do you wish to use?"
+msgstr ""
+
+#: vih_lectures_pdf.module:142
+msgid "Logo"
+msgstr ""
+
+#: vih_lectures_pdf.module:144
+msgid "The uploaded image will be displayed on this page using the image style choosen below."
+msgstr ""
+
+#: vih_lectures_pdf.module:151
+msgid "Link"
+msgstr ""
+
+#: vih_lectures_pdf.module:153
+msgid "Link to use for the logo"
+msgstr ""
+
+#: vih_lectures_pdf.module:13
+msgid "PDF"
+msgstr ""
+
+#: vih_lectures_pdf.module:21
+msgid "Plakat"
+msgstr ""
+
+#: vih_lectures_pdf.module:29
+msgid "Lectures"
+msgstr ""
+
+#: vih_lectures_pdf.module:30
+msgid "Settings for printout of the lectures"
+msgstr ""
+
+#: vih_lectures_pdf.info:0
+msgid "VIH Lectures PDF"
+msgstr ""
+
+#: vih_lectures_pdf.info:0
+msgid "PDF printouts of lectures"
+msgstr ""
+
+#: vih_lectures_pdf.info:0 plugins/layouts/landscape/landscape.inc:6 plugins/layouts/portrait/portrait.inc:6 plugins/layouts/portrait_pictures/portrait_pictures.inc:6 plugins/posters/portrait_a3/portrait_a3.inc:6
+msgid "VIH"
+msgstr ""
+
+#: plugins/layouts/landscape/landscape.inc:5
+msgid "Landscape"
+msgstr ""
+
+#: plugins/layouts/portrait/portrait.inc:5
+msgid "Portrait"
+msgstr ""
+
+#: plugins/layouts/portrait_pictures/portrait_pictures.inc:5
+msgid "Portrait Pictures"
+msgstr ""
+
+#: plugins/posters/portrait_a3/portrait_a3.inc:5
+msgid "Portrait A3 Poster"
+msgstr ""
+
