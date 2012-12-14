@@ -83,6 +83,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->SetFont($this->frontpage_font, 'B', 30);
     $this->MultiCell(0, 0, $this->sub_title, null, 'C');
     if (!empty($this->logo) && file_exists($this->logo)) {
+    
       $this->Image($this->logo, 55, 240, 90, 0, '', $this->link);
     }
   }
@@ -105,6 +106,11 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
   }
 
   function addEventPage($event) {
+    // Only works with one product
+    $product = commerce_product_load($event->field_product[LANGUAGE_NONE][0]['product_id']);
+    $price_calculate = commerce_product_calculate_sell_price($product);
+    $price = commerce_currency_format($price_calculate['amount'], $price_calculate['currency_code'], $product);
+
     $title = check_plain($event->title);
     $speaker = trim($event->field_speaker[LANGUAGE_NONE][0]['value']);
     $body_field = field_get_items('node', $event, 'body');
@@ -112,7 +118,6 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $picture = field_get_items('node', $event, 'field_picture');
     $picture_filename = drupal_realpath(image_style_path('sidepicture', $picture[0]['uri']));
     $location = trim($event->field_location[LANGUAGE_NONE][0]['safe_value']);
-    $price = trim($event->field_price[LANGUAGE_NONE][0]['value']);
     $tilmelding = $this->base_url . '/node/' . $event->nid;
     $start_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
     $end_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value2'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
@@ -149,7 +154,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->setY(252);
     $this->setX($x);
     $this->SetFont($this->font, null, 14);
-    $this->Write(14, 'Pris: ' . $price . ' kroner');
+    $this->Write(14, 'Pris: ' . $price);
     $this->setY(258);
     $this->setX($x);
     $this->Write(14, 'Sted: ' . $location);
