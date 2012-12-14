@@ -26,7 +26,8 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     if ($no_of_events >= 6) {
 
       // edit settings
-      $img_size = 45;
+      $img_size = 42;
+      $margen = 3;
       $pictures_pr_row = 4;
       $max_rows = 4;
 
@@ -47,9 +48,9 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
         if (file_exists($picture_filename)) {
           $this->Image($picture_filename, $x, $y, $img_size, 0, '');
         }
-        $x += $img_size;
+        $x += $img_size + $margen;
         if ($j >= $pictures_pr_row) {
-          $y += $img_size;
+          $y += $img_size + $margen;
           $x = $start_x;
           $j = 0;
           $row_count++;
@@ -60,6 +61,19 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
           break;
         }
       }
+
+      $missing_squares = $max_rows - $j + 1;
+
+      for ($u = 0; $u < $missing_squares; $u++){
+        $r = rand(0, 255);
+        $s = rand(0, 255);
+        $t = rand(0, 255);
+        $this->SetFillColor($r, $s, $t);
+        $this->SetDrawColor($r, $s, $t);
+        $this->Rect($x, $y, $img_size, $img_size, 'DF');
+        $x += $img_size + $margen;
+      }
+
       if ($i <= $pictures_pr_row) {
         $this->setY($this->getY() + $img_size + 5);
       }
@@ -69,7 +83,6 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
       else {
         $this->setY($y);
       }
-      
     }
     else {
       $this->setY($this->getY() + 5);
@@ -83,8 +96,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->SetFont($this->frontpage_font, 'B', 30);
     $this->MultiCell(0, 0, $this->sub_title, null, 'C');
     if (!empty($this->logo) && file_exists($this->logo)) {
-    
-      $this->Image($this->logo, 55, 240, 90, 0, '', $this->link);
+      $this->Image($this->logo, 60, 240, 90, 0, '', $this->link);
     }
   }
 
