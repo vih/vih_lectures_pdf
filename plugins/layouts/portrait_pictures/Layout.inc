@@ -106,18 +106,18 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
 
   function addEventPage($event) {
     $title = check_plain($event->title);
-    $speaker = trim($event->field_speaker['und'][0]['value']);
+    $speaker = trim($event->field_speaker[LANGUAGE_NONE][0]['value']);
     $body_field = field_get_items('node', $event, 'body');
     $body = check_markup($this->clearJavascript($body_field[0]['safe_value']), 'filtered_html');
     $picture = field_get_items('node', $event, 'field_picture');
     $picture_filename = drupal_realpath(image_style_path('sidepicture', $picture[0]['uri']));
-    $location = trim($event->field_location['und'][0]['safe_value']);
-    $price = trim($event->field_price['und'][0]['value']);
+    $location = trim($event->field_location[LANGUAGE_NONE][0]['safe_value']);
+    $price = trim($event->field_price[LANGUAGE_NONE][0]['value']);
     $tilmelding = $this->base_url . '/node/' . $event->nid;
-    $start_date = new DateTime($event->field_date['und'][0]['value'], new DateTimeZone($event->field_date['und'][0]['timezone']));
-    $end_date = new DateTime($event->field_date['und'][0]['value2'], new DateTimeZone($event->field_date['und'][0]['timezone']));
+    $start_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
+    $end_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value2'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
     $date = ucfirst($this->t($start_date->format('l')) . ', ' . $start_date->format('j.') . $this->t($start_date->format('F')) . ', ' . $start_date->format('Y H:i') . '-' . $end_date->format('H:i'));
-    $date = format_date(strtotime($event->field_date['und'][0]['value']) + $start_date->getOffset(), 'custom', 'l, j. F, Y H:i', date_default_timezone_get()) . '-' . format_date(strtotime($event->field_date['und'][0]['value2']) + $end_date->getOffset(), 'custom', 'H:i', date_default_timezone_get());
+    $date = format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value']) + $start_date->getOffset(), 'custom', 'l, j. F, Y H:i', date_default_timezone_get()) . '-' . format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value2']) + $end_date->getOffset(), 'custom', 'H:i', date_default_timezone_get());
 
     $this->addPage();
     $this->SetFont($this->font, 'B', 22);
