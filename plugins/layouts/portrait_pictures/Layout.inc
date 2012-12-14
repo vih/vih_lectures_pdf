@@ -62,7 +62,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
         }
       }
 
-      $missing_squares = $max_rows - $j + 1;
+      $missing_squares = $pictures_pr_row - $j + 1;
 
       for ($u = 0; $u < $missing_squares; $u++){
         $r = rand(0, 255);
