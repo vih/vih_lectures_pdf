@@ -17,7 +17,20 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
     $this->image = $image;
     parent::__construct('P','mm','A3');
   }
-    
+
+  protected function getPictureFilename($style_name, $uri) {
+    $dest = image_style_path($stylename, $uri);
+    if (!file_exists($dest)) {
+      $style = image_style_load($style_name);      
+      image_style_create_derivative($style, $uri, $dest);
+    }
+    $picture_filename = drupal_realpath($dest);
+    if (!file_exists($picture_filename)) {
+      return FALSE;
+    }
+    return $picture_filename;
+  }
+
   function addHeader() {
     $this->addPage();
     $this->setY(10);
@@ -48,8 +61,7 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
       
       foreach ($this->events as $event) {
         $picture = field_get_items('node', $event, 'field_picture');
-        $picture_filename = drupal_realpath(image_style_path('square_thumbnail', $picture[0]['uri']));
-        if (file_exists($picture_filename)) {
+        if ($picture_filename = $this->getPictureFilename('square_thumbnail', $picture[0]['uri'])) {
           $this->Image($picture_filename, $x, $y, $img_size, 0, '');
         }
         $x += $img_size + $margen;

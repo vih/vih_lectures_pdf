@@ -13,6 +13,19 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->events = $events;
     parent::__construct('P','mm','A4');
   }
+  
+  protected function getPictureFilename($style_name, $uri) {
+    $dest = image_style_path($style_name, $uri);
+    if (!file_exists($dest)) {
+      $style = image_style_load($style_name);
+      image_style_create_derivative($style, $uri, $dest);
+    }
+    $picture_filename = drupal_realpath($dest);
+    if (!file_exists($picture_filename)) {
+      return FALSE;
+    }
+    return $picture_filename;
+  }
     
   function addFrontpage($image) {
     $this->addPage();
@@ -41,11 +54,10 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
       if (floor($rows) > $max_rows) {
         $rows = $max_rows;
       }
-      
       foreach ($this->events as $event) {
         $picture = field_get_items('node', $event, 'field_picture');
-        $picture_filename = drupal_realpath(image_style_path('square_thumbnail', $picture[0]['uri']));
-        if (file_exists($picture_filename)) {
+
+        if ($picture_filename = $this->getPictureFilename('square_thumbnail', $picture[0]['uri'])) {
           $this->Image($picture_filename, $x, $y, $img_size, 0, '');
         }
         $x += $img_size + $margen;
@@ -61,7 +73,6 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
           break;
         }
       }
-
       $missing_squares = $pictures_pr_row - $j + 1;
 
       for ($u = 0; $u < $missing_squares; $u++){
@@ -128,7 +139,6 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $body_field = field_get_items('node', $event, 'body');
     $body = check_markup($this->clearJavascript($body_field[0]['safe_value']), 'filtered_html');
     $picture = field_get_items('node', $event, 'field_picture');
-    $picture_filename = drupal_realpath(image_style_path('sidepicture', $picture[0]['uri']));
     $location = trim($event->field_location[LANGUAGE_NONE][0]['safe_value']);
     $tilmelding = $this->base_url . '/node/' . $event->nid;
     $start_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
@@ -151,7 +161,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->Line(0, 245, 220, 245);
     $this->Line(220, 40, 220, 220);
 
-    if (file_exists($picture_filename)) {
+    if ($picture_filename = $this->getPictureFilename('sidepicture', $picture[0]['uri'])) {
       $this->Image($picture_filename, 150, 5, 0, 75, '');
     }
 
