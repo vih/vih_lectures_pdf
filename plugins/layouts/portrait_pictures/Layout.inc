@@ -112,6 +112,8 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
   }
 
   function addSecondPage() {
+    $this->SetFillColor(0, 0, 0);
+    $this->SetDrawColor(0, 0, 0);
     $this->addPage();
     $this->SetFont($this->frontpage_font, '', 22);
     $this->MultiCell(0, 0, $this->heading, null, 'L');
@@ -147,13 +149,14 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $date = format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value']) + $start_date->getOffset(), 'custom', 'l, j. F, Y H:i', date_default_timezone_get()) . '-' . format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value2']) + $end_date->getOffset(), 'custom', 'H:i', date_default_timezone_get());
 
     $this->addPage();
-    $this->SetFont($this->font, 'B', 22);
     $this->setY(10);
+    $this->setTextColor(128, 128, 128);
+    $this->SetFont($this->font, 'B', 22);
     $this->MultiCell(130, 0, $speaker, null, 'L');
+    $this->setTextColor(0, 0, 0);
     $this->SetFont($this->font, 'B', 34);
     $this->MultiCell(130, 0, $title, null, 'L');
     $this->SetFont($this->font, null, 18);
-    $this->setTextColor(0, 0, 0);
     $this->Line(0, 85, 220, 85);
     $this->setY(95);
     $this->writeHTMLCell(190, 10, $this->GetX(), $this->GetY(), $body); 
