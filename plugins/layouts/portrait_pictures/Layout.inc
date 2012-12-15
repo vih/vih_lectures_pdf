@@ -149,7 +149,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->addPage();
     $this->SetFont($this->font, 'B', 22);
     $this->setY(10);
-    $this->Cell(150, 0, $speaker, null, 2, 'L');
+    $this->MultiCell(130, 0, $speaker, null, 'L');
     $this->SetFont($this->font, 'B', 34);
     $this->MultiCell(130, 0, $title, null, 'L');
     $this->SetFont($this->font, null, 18);
