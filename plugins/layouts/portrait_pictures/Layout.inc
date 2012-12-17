@@ -6,8 +6,8 @@ require_once dirname(__FILE__) . '/../Base.inc';
 
 class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
 
-  protected $font = 'dejavusans';
-  protected $frontpage_font = 'dejavusans';
+  protected $font = 'helvetica';
+  protected $frontpage_font = 'helvetica';
 
   function __construct($events) {
     $this->events = $events;
