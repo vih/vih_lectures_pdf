@@ -5,6 +5,46 @@
  */
 
 /**
+* Implements hook_libraries_info();
+*/
+function teambuilder_activities_pdf_libraries_info() {
+  // This array key lets Libraries API search for 'sites/all/libraries/example'
+  // directory, which should contain the entire, original extracted library.
+  $libraries['tcpdf'] = array(
+    // Only used in administrative UI of Libraries API.
+    'name' => 'TCPDF',
+    'vendor url' => 'http://www.tcpdf.org/',
+    'download url' => 'http://sourceforge.net/projects/tcpdf/files/',
+    // Optional: If, after extraction, the actual library files are contained in
+    // 'sites/all/libraries/example/lib', specify the relative path here.
+    //'path' => '',
+    // Optional: Define a custom version detection callback, if required.
+    //'version callback' => 'mymodule_get_version',
+    // Specify arguments for the version callback. By default,
+    // libraries_get_version() takes a named argument array:
+    //'version arguments' => array(
+    // 'file' => 'docs/CHANGELOG.txt',
+    // 'pattern' => '@version\s+([0-9a-zA-Z\.-]+)@',
+    // 'lines' => 5,
+    // 'cols' => 20,
+    //),
+    'files' => array(
+      'php' => array(
+        'tcpdf.php',
+      ),
+    ),
+    // Optional: Register files to auto-load for your module. All files must be
+    // keyed by module, and follow the syntax of the 'files' property.
+    'integration files' => array(
+      'teambuilder_activites_pdf' => array(
+        'php' => array('tcpdf.php'),
+      ),
+    ),
+  );
+  return $libraries;
+}
+
+/**
  * Implements hook_menu().
  */
 function vih_lectures_pdf_menu() {
