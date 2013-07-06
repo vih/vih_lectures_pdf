@@ -13,7 +13,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->events = $events;
     parent::__construct('P','mm','A4');
   }
-  
+
   protected function getPictureFilename($style_name, $uri) {
     $dest = image_style_path($style_name, $uri);
     if (!file_exists($dest)) {
@@ -49,7 +49,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
       $y = $this->getY() + 5;
       $i = 0;
       $j = 1;
-      
+
       $rows = $no_of_events / $pictures_pr_row;
       if (floor($rows) > $max_rows) {
         $rows = $max_rows;
@@ -131,11 +131,6 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
   }
 
   function addEventPage($event) {
-    // Only works with one product
-    $product = commerce_product_load($event->field_product[LANGUAGE_NONE][0]['product_id']);
-    $price_calculate = commerce_product_calculate_sell_price($product);
-    $price = commerce_currency_format($price_calculate['amount'], $price_calculate['currency_code'], $product);
-
     $title = check_plain($event->title);
     $speaker = trim($event->field_speaker[LANGUAGE_NONE][0]['value']);
     $body_field = field_get_items('node', $event, 'body');
@@ -147,6 +142,13 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $end_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value2'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
     $date = ucfirst($this->t($start_date->format('l')) . ', ' . $start_date->format('j.') . $this->t($start_date->format('F')) . ', ' . $start_date->format('Y H:i') . '-' . $end_date->format('H:i'));
     $date = format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value']) + $start_date->getOffset(), 'custom', 'l, j. F, Y H:i', date_default_timezone_get()) . '-' . format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value2']) + $end_date->getOffset(), 'custom', 'H:i', date_default_timezone_get());
+
+    // Only works with one product
+    if (!empty($event->field_product[LANGUAGE_NONE][0]['product_id'])) {
+      $product = commerce_product_load($event->field_product[LANGUAGE_NONE][0]['product_id']);
+      $price_calculate = commerce_product_calculate_sell_price($product);
+      $price = commerce_currency_format($price_calculate['amount'], $price_calculate['currency_code'], $product);
+    }
 
     $this->addPage();
     $this->setY(10);
@@ -176,17 +178,26 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
       $this->Image($this->logo, 151, 260, 50, 0, '', $this->link);
     }
     $x = 40;
-    $this->setY(252);
+    $start_y = 252;
+    $line_height = 6;
+    $this->setY($start_y);
     $this->setX($x);
     $this->SetFont($this->font, null, 14);
-    $this->Write(14, 'Pris: ' . $price);
-    $this->setY(258);
-    $this->setX($x);
+    if (!empty($price)) {
+      $this->Write(14, 'Pris: ' . $price);
+      $this->setY($start_y + $line_height);
+      $this->setX($x);
+      $no_lines = 2;
+    }
+    else {
+      $no_lines = 1;
+    }
     $this->Write(14, 'Sted: ' . $location);
-    $this->setY(264);
+    $this->setY($start_y + $no_lines * $line_height);
     $this->setX($x);
+    $no_lines++;
     $this->Write(14, 'Tid: ' . $date);
-    $this->setY(270);
+    $this->setY($start_y + $no_lines * $line_height);
     $this->setX($x);
     $this->Write(14, 'Tilmelding: ' . $tilmelding);        
     $this->Ln();
