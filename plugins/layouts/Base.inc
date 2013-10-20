@@ -119,7 +119,7 @@ abstract class VIH_Lectures_Pdf_Base extends TCPDF {
    */
   protected function getBarcodePath($url, $height, $width) {
     $chart = array(
-      '#chart_id' => 'test_chart',
+      '#chart_id' => 'lecture_chart_' . md5($url),
       '#type' => CHART_TYPE_QR,
       '#size' => chart_size(200, 200) 
     );
@@ -127,6 +127,6 @@ abstract class VIH_Lectures_Pdf_Base extends TCPDF {
     $chart['#data'][] = '';
     $chart['#labels'][] = $url;
         
-    return chart_copy($chart, 'my_chart_' . uniqid(), 'public://charts/');
+    return chart_copy($chart, 'lecture_qr_' . md5($url), 'public://charts/');
   }
 }
