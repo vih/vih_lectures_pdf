@@ -7,7 +7,7 @@
 /**
 * Implements hook_libraries_info();
 */
-function teambuilder_activities_pdf_libraries_info() {
+function vih_lectures_pdf_libraries_info() {
   // This array key lets Libraries API search for 'sites/all/libraries/example'
   // directory, which should contain the entire, original extracted library.
   $libraries['tcpdf'] = array(
@@ -36,7 +36,7 @@ function teambuilder_activities_pdf_libraries_info() {
     // Optional: Register files to auto-load for your module. All files must be
     // keyed by module, and follow the syntax of the 'files' property.
     'integration files' => array(
-      'teambuilder_activites_pdf' => array(
+      'vih_lectures_pdf' => array(
         'php' => array('tcpdf.php'),
       ),
     ),
