@@ -68,20 +68,20 @@ function vih_lectures_pdf_menu() {
  * Access check for a pdf for lectures.
  */
 function vih_lectures_pdf_access($node) {
-  if ($node->type != 'vih_lectures' AND $node->type != 'vih_lecture') {
-    return FALSE;
+  if ($node->type == 'vih_lectures' OR $node->type == 'vih_lecture') {
+    return TRUE;
   }
-  return TRUE;
+  return FALSE;
 }
 
 /**
  * Access check for for the posters.
  */
 function vih_lectures_pdf_poster_access($node) {
-  if ($node->type != 'vih_lectures') {
-    return FALSE;
+  if ($node->type == 'vih_lectures') {
+    return TRUE;
   }
-  return TRUE;
+  return FALSE;
 }
 
 /**
