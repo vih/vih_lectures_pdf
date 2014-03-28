@@ -8,6 +8,7 @@ dependencies[] = libraries
 dependencies[] = commerce
 dependencies[] = ctools
 dependencies[] = vih_lectures
+dependencies[] = vih_images
 
 configure = admin/config/vih/lectures
 
