@@ -61,7 +61,7 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
       
       foreach ($this->events as $event) {
         $picture = field_get_items('node', $event, 'field_picture');
-        if ($picture_filename = $this->getPictureFilename('lectures_square', $picture[0]['uri'])) {
+        if ($picture_filename = $this->getPictureFilename('panopoly_image_square', $picture[0]['uri'])) {
           $this->Image($picture_filename, $x, $y, $img_size, 0, '');
         }
         $x += $img_size + $margen;
