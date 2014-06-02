@@ -3,7 +3,7 @@
 /**
  * @file
  *
- * drush integration for views_infinite_scroll.
+ * drush integration for vih_lectures_pdf.
  */
 
 define('TCPDF_DOWNLOAD_URI', 'http://downloads.sourceforge.net/project/tcpdf/tcpdf_5_9_144.zip');
