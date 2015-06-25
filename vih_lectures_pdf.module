@@ -65,6 +65,25 @@ function vih_lectures_pdf_menu() {
 }
 
 /**
+ * Utility to prepare TCPDF.
+ */
+function vih_lectures_pdf_is_tcpdf_ready() {
+  if (!($library = libraries_load('tcpdf')) && empty($library['loaded'])) {
+     die('TCPDF library is not loaded');
+  }
+
+  $cache_path = 'public://tcpdf_cache/';
+  if (file_prepare_directory($cache_path, FILE_CREATE_DIRECTORY) == TRUE){
+    define('K_PATH_CACHE', drupal_realpath($cache_path));
+  }
+  else {
+    die('Could not initiate TCPDF Cache directory');
+  }
+  return true;
+}
+
+
+/**
  * Access check for a pdf for lectures.
  */
 function vih_lectures_pdf_access($node) {
@@ -235,8 +254,8 @@ function vih_lectures_pdf_admin_settings_submit($form, &$form_state) {
  * Creates a booklet for a lecture or lectures.
  */
 function vih_lectures_pdf_booklet($lecture) {
-  if (!($library = libraries_load('tcpdf')) && empty($library['loaded'])) {
-     die('TCPDF library is not loaded');
+  if (!vih_lectures_pdf_is_tcpdf_ready()) {
+    die('Problems loading TCPDF library');
   }
 
   global $base_url;
@@ -247,7 +266,7 @@ function vih_lectures_pdf_booklet($lecture) {
   $class = 'VIH_Lectures_Pdf_' . ucfirst($layout);
 
   if ($lecture->type == 'vih_lectures') {
-    foreach ($lecture->field_lectures['und'] as $key => $value) {
+    foreach ($lecture->field_lectures[LANGUAGE_NONE] as $key => $value) {
       $node = node_load($value['target_id']);
       if ($node) {
         $events[] = $node;
@@ -265,7 +284,7 @@ function vih_lectures_pdf_booklet($lecture) {
     $pdf->setLogo(drupal_realpath($logo->uri));
   }
   if ($lecture->type == 'vih_lectures') {
-    $pdf->setSubTitle($lecture->field_subtitle['und'][0]['safe_value']);
+    $pdf->setSubTitle($lecture->field_subtitle[LANGUAGE_NONE][0]['safe_value']);
     $pdf->setDescription($lecture->body['da'][0]['safe_value']);
     $file = drupal_realpath($lecture->field_picture['da'][0]['uri']);
     $pdf->addFrontpage($file);
@@ -279,8 +298,8 @@ function vih_lectures_pdf_booklet($lecture) {
  * Creates a poster for lectures.
  */
 function vih_lectures_pdf_poster($lecture) {
-  if (!($library = libraries_load('tcpdf')) && empty($library['loaded'])) {
-     die('TCPDF library is not loaded');
+  if (!vih_lectures_pdf_is_tcpdf_ready()) {
+    die('Problems loading TCPDF library');
   }
   global $base_url;
   $events = array();
@@ -289,7 +308,7 @@ function vih_lectures_pdf_poster($lecture) {
 
   $class = 'VIH_Lectures_Pdf_Poster_' . ucfirst($layout);
 
-  foreach ($lecture->field_lectures['und'] as $key => $value) {
+  foreach ($lecture->field_lectures[LANGUAGE_NONE] as $key => $value) {
     $node = node_load($value['target_id']);
     if ($node) {
       $events[] = $node;
@@ -303,7 +322,7 @@ function vih_lectures_pdf_poster($lecture) {
   if ($logo = file_load(variable_get('vih_lectures_pdf_logo', ''))) {
     $pdf->setLogo(drupal_realpath($logo->uri));
   }
-  $pdf->setSubTitle($lecture->field_subtitle['und'][0]['safe_value']);
+  $pdf->setSubTitle($lecture->field_subtitle[LANGUAGE_NONE][0]['safe_value']);
   $pdf->setDescription($lecture->body['da'][0]['safe_value']);
   $file = drupal_realpath($lecture->field_picture['da'][0]['uri']);
   $pdf->render();
