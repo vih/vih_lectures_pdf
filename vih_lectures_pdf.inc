@@ -19,7 +19,7 @@ class VIH_Lectures_Pdf extends TCPDF
     protected $pdf;
     protected $heading = 'Vejle Idrætshøjskoles foredrag';
     protected $sub_title = 'Kom og høre med!';
-    protected $description = 'description';    
+    protected $description = 'description';
     protected $logo;
 
     function __construct()
@@ -42,12 +42,12 @@ class VIH_Lectures_Pdf extends TCPDF
     {
         $this->description = $desc;
     }
-    
+
     function Header()
     {
         // left blank to remove line in header added by TCPDF
     }
-    
+
     function addFrontpage($image)
     {
         $this->addPage();
@@ -98,7 +98,7 @@ class VIH_Lectures_Pdf extends TCPDF
         $this->setY(40);
 
         $this->writeHTMLCell(200, 10, $this->GetX(), $this->GetY(), $body); 
-        
+
         $this->Line(10, 165, 220, 165);
         $this->Line(220, 40, 220, 220);
 
@@ -113,7 +113,7 @@ class VIH_Lectures_Pdf extends TCPDF
             '#data' => 'http://vih.dk'
         );
         $qr_file = chart_copy($chart, 'my_chart', '/home/vih/vih.dk/sites/default/files/charts/');
-        
+
         if ($qr_file !== false) {
             $this->Image($qr_file, 235, 135, 45, 0, '');
         }
@@ -144,7 +144,7 @@ class VIH_Lectures_Pdf extends TCPDF
 
         $this->Output('foredrag.pdf', 'I');
     }
-    
+
     function t($phrase)
     {
         // Default to English
@@ -180,7 +180,7 @@ class VIH_Lectures_Pdf extends TCPDF
           '10' => 'oktober',
           '11' => 'november',
           '12' => 'december'
-        );    
+        );
         if (!empty($phrases[$phrase])) {
             return $phrases[$phrase];
         }

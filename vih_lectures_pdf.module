@@ -172,7 +172,7 @@ function vih_lectures_pdf_admin_settings() {
   foreach (vih_lectures_pdf_get_layouts() as $key => $layout) {
     $options[$key] = $key;
   }
-  
+
   $form = array();
 
   $form['vih_lectures_pdf']['layout'] = array(
@@ -240,14 +240,14 @@ function vih_lectures_pdf_admin_settings_submit($form, &$form_state) {
   else {
     // Load the file via file.fid.
     $file = file_load(variable_get('vih_lectures_pdf_logo', ''));
-    
+
     if ($file->fid) {
       // Delete the file and the usage record
       file_delete($file, TRUE);
     }
 
     variable_set('vih_lectures_pdf_logo', '');
-  }  
+  }
 }
 
 /**
@@ -272,10 +272,10 @@ function vih_lectures_pdf_booklet($lecture) {
         $events[] = $node;
       }
     }
-  } 
+  }
   else {
     $events[] = $lecture;
-  } 
+  }
   $pdf = new $class($events);
   $pdf->setBaseUrl($base_url);
   $pdf->setHeading($lecture->title);

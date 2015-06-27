@@ -26,7 +26,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     }
     return $picture_filename;
   }
-    
+
   function addFrontpage($image) {
     $this->addPage();
     $this->setY(10);
@@ -102,7 +102,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
       }
       $this->setY($this->getY() + 125);
     }
-    
+
     $this->setY($this->getY() + 5);
     $this->SetFont($this->frontpage_font, 'B', 30);
     $this->MultiCell(0, 0, $this->sub_title, null, 'C');
@@ -161,8 +161,8 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->SetFont($this->font, null, 18);
     $this->Line(0, 85, 220, 85);
     $this->setY(95);
-    $this->writeHTMLCell(190, 10, $this->GetX(), $this->GetY(), $body); 
-      
+    $this->writeHTMLCell(190, 10, $this->GetX(), $this->GetY(), $body);
+
     $this->Line(0, 245, 220, 245);
     $this->Line(220, 40, 220, 220);
 
@@ -199,7 +199,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_Base {
     $this->Write(14, 'Tid: ' . $date);
     $this->setY($start_y + $no_lines * $line_height);
     $this->setX($x);
-    $this->Write(14, 'Tilmelding: ' . $tilmelding);        
+    $this->Write(14, 'Tilmelding: ' . $tilmelding);
     $this->Ln();
   }
 
