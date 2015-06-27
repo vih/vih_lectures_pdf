@@ -2,9 +2,17 @@
 /**
  * @file
  */
-require_once dirname(__FILE__) . '/../PortraitLayout.inc';
+require_once dirname(__FILE__) . '/Base.inc';
 
-class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_PortraitLayout {
+class VIH_Lectures_Pdf_PortraitLayout extends VIH_Lectures_Pdf_Base {
+
+  protected $font = 'helvetica';
+  protected $frontpage_font = 'helvetica';
+
+  function __construct($events) {
+    $this->events = $events;
+    parent::__construct('P','mm','A4');
+  }
 
   protected function getPictureFilename($style_name, $uri) {
     $dest = image_style_path($style_name, $uri);

@@ -6,4 +6,3 @@ $plugin = array(
   'category' => t('VIH'),
   'icon' => 'screenshot.png',
 );
-

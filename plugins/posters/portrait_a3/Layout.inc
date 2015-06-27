@@ -53,12 +53,12 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
       $y = $this->getY() + 5;
       $i = 0;
       $j = 1;
-      
+
       $rows = $no_of_events / $pictures_pr_row;
       if (floor($rows) > $max_rows) {
         $rows = $max_rows;
       }
-      
+
       foreach ($this->events as $event) {
         $picture = field_get_items('node', $event, 'field_picture');
         if ($picture_filename = $this->getPictureFilename('panopoly_image_square', $picture[0]['uri'])) {
@@ -107,7 +107,7 @@ class VIH_Lectures_Pdf_Poster_Portrait_a3 extends VIH_Lectures_Pdf_Poster_Base {
       }
       $this->setY($this->getY() + 125);
     }
-    
+
     $this->setY($this->getY() + 5);
     $this->SetFont($this->frontpage_font, 'B', 30);
     $this->MultiCell(0, 0, $this->sub_title, null, 'C');

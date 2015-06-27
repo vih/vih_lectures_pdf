@@ -2,18 +2,10 @@
 /**
  * @file
  */
-require_once dirname(__FILE__) . '/../Base.inc';
+require_once dirname(__FILE__) . '/../PortraitLayout.inc';
 
-class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_Base {
+class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_PortraitLayout {
 
-  protected $font = 'helvetica';
-  protected $frontpage_font = 'helvetica';
-
-  function __construct($events) {
-    $this->events = $events;
-    parent::__construct('P','mm','A4');
-  }
-    
   function addFrontpage($image) {
     $this->addPage();
     $this->Image($image, 10, 10, 190, 0, '');
@@ -46,18 +38,18 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_Base {
 
   function addEventPage($event) {
     $title = check_plain($event->title);
-    $speaker = trim($event->field_speaker['und'][0]['value']);
+    $speaker = trim($event->field_speaker[LANGUAGE_NONE][0]['value']);
     $body_field = field_get_items('node', $event, 'body');
-    $body = check_markup($this->clearJavascript($body_field[0]['safe_value']), 'filtered_html');
+    $body = check_markup($this->clearJavascript($body_field[0]['safe_value']), 'panopoly_wysiwyg_text');
     $picture = field_get_items('node', $event, 'field_picture');
     $picture_filename = drupal_realpath(image_style_path('sidepicture', $picture[0]['uri']));
-    $location = trim($event->field_location['und'][0]['safe_value']);
-    $price = trim($event->field_price['und'][0]['value']);
+    $location = trim($event->field_location[LANGUAGE_NONE][0]['safe_value']);
+    $price = trim($event->field_price[LANGUAGE_NONE][0]['value']);
     $tilmelding = 'http://vih.dk/node/' . $event->nid;
-    $start_date = new DateTime($event->field_date['und'][0]['value'], new DateTimeZone($event->field_date['und'][0]['timezone']));
-    $end_date = new DateTime($event->field_date['und'][0]['value2'], new DateTimeZone($event->field_date['und'][0]['timezone']));
+    $start_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
+    $end_date = new DateTime($event->field_date[LANGUAGE_NONE][0]['value2'], new DateTimeZone($event->field_date[LANGUAGE_NONE][0]['timezone']));
     $date = ucfirst($this->t($start_date->format('l')) . ', ' . $start_date->format('j.') . $this->t($start_date->format('F')) . ', ' . $start_date->format('Y H:i') . '-' . $end_date->format('H:i'));
-    $date = format_date(strtotime($event->field_date['und'][0]['value']) + $start_date->getOffset(), 'custom', 'l, j. F, Y H:i', date_default_timezone_get()) . '-' . format_date(strtotime($event->field_date['und'][0]['value2']) + $end_date->getOffset(), 'custom', 'H:i', date_default_timezone_get());
+    $date = format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value']) + $start_date->getOffset(), 'custom', 'l, j. F, Y H:i', date_default_timezone_get()) . '-' . format_date(strtotime($event->field_date[LANGUAGE_NONE][0]['value2']) + $end_date->getOffset(), 'custom', 'H:i', date_default_timezone_get());
 
     $this->addPage();
     $this->SetFont($this->font, 'B', 22);
@@ -70,7 +62,7 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_Base {
     $this->Line(0, 85, 220, 85);
     $this->setY(95);
     $this->writeHTMLCell(190, 10, $this->GetX(), $this->GetY(), $body); 
-      
+
     $this->Line(0, 245, 220, 245);
     $this->Line(220, 40, 220, 220);
 
@@ -98,7 +90,7 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_Base {
     $this->Write(14, 'Tid: ' . $date);
     $this->setY(270);
     $this->setX($x);
-    $this->Write(14, 'Tilmelding: ' . $tilmelding);        
+    $this->Write(14, 'Tilmelding: ' . $tilmelding);
     $this->Ln();
   }
 

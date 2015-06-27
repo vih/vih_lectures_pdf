@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- */  
+ */
 require_once libraries_get_path('tcpdf') . '/tcpdf.php';
 
 abstract class VIH_Lectures_Pdf_Poster_Base extends TCPDF {
@@ -17,19 +17,19 @@ abstract class VIH_Lectures_Pdf_Poster_Base extends TCPDF {
   function setBaseUrl($base_url) {
     $this->base_url = $base_url;
   }
-  
+
   function setAuthor($author) {
     $this->author = $author;
   }
 
   /**
    * @param string $logo Path to the logo
-   */  
+   */
   function setLogo($logo, $link = null) {
     $this->logo = $logo;
-    $this->link = $link;    
+    $this->link = $link;
   }
-  
+
   function setHeading($title) {
     $this->heading = $title;
   }
@@ -41,15 +41,15 @@ abstract class VIH_Lectures_Pdf_Poster_Base extends TCPDF {
   function setDescription($desc) {
     $this->description = $desc;
   }
-    
+
   function Header() {
     // left blank to remove line in header added by TCPDF
   }
-    
+
   function Footer() {
     // left blank to remove line in header added by TCPDF
   }
-    
+
   function clearJavascript($s) {
     $do = true;
     while ($do) {
@@ -57,7 +57,7 @@ abstract class VIH_Lectures_Pdf_Poster_Base extends TCPDF {
       $stop = stripos($s, '</script>');
       if ((is_numeric($start)) && (is_numeric($stop))) {
         $s = substr($s, 0, $start) . substr($s, ($stop + strlen('</script>')));
-      } 
+      }
       else {
         $do = false;
       }
@@ -108,9 +108,9 @@ abstract class VIH_Lectures_Pdf_Poster_Base extends TCPDF {
     }
     return $phrase;
   }
-  
+
   abstract public function render();
-  
+
   /**
    * Gets barcode file path
    *
@@ -126,10 +126,10 @@ abstract class VIH_Lectures_Pdf_Poster_Base extends TCPDF {
       '#type' => CHART_TYPE_QR,
       '#size' => chart_size(200, 200) 
     );
-        
+
     $chart['#data'][] = '';
     $chart['#labels'][] = $url;
-        
+
     return chart_copy($chart, 'my_chart_' . uniqid(), 'public://charts/');
   }
 }
