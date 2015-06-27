@@ -6,6 +6,7 @@ version = "7.x-0.5"
 
 dependencies[] = libraries
 dependencies[] = commerce
+dependencies[] = chart
 dependencies[] = ctools
 dependencies[] = vih_lectures
 dependencies[] = vih_images
@@ -13,4 +14,3 @@ dependencies[] = vih_images
 configure = admin/config/vih/lectures
 
 files[] = drush/vih_lectures_pdf.drush.inc
-
