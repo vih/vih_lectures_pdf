@@ -276,6 +276,7 @@ function vih_lectures_pdf_booklet($lecture) {
   else {
     $events[] = $lecture;
   }
+  /** @var VIH_Lectures_Pdf_Portrait $pdf */
   $pdf = new $class($events);
   $pdf->setBaseUrl($base_url);
   $pdf->setHeading($lecture->title);

@@ -61,10 +61,19 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_PortraitLayout {
     $this->setTextColor(0, 0, 0);
     $this->Line(0, 85, 220, 85);
     $this->setY(95);
-    $this->writeHTMLCell(190, 10, $this->GetX(), $this->GetY(), $body); 
+    $this->SetFont($this->font, null, 14);
+    $this->writeHTMLCell(190, 10, $this->GetX(), $this->GetY(), $body);
 
-    $this->Line(0, 245, 220, 245);
+    // Make sure pointer set to new page if one.
+    $this->lastPage();
+    // Set y to last cell height, doesn't include passed $h for some reason.
+    $this->setY($this->lasth+20);
+
+    $this->Line(0, $this->GetY(), 220, $this->GetY());
     $this->Line(220, 40, 220, 220);
+
+    // Offset bottom a tad.
+    $this->setY($this->GetY() + 5);
 
     if ($picture_filename) {
       $this->Image($picture_filename, 150, 5, 0, 75, '');
@@ -72,23 +81,22 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_PortraitLayout {
 
     $qr_file = $this->getBarcodePath($tilmelding, 200, 200);
     if ($qr_file !== false) {
-      $this->Image($qr_file, 4, 250, 35, 0, '');
+      $this->Image($qr_file, 4, $this->GetY(), 35, 0, '');
     }
     if (!empty($this->logo) && file_exists($this->logo)) {
-      $this->Image($this->logo, 150, 255, 50, 0, '', 'http://vih.dk/');
+      $this->Image($this->logo, 150, $this->GetY() + 5, 50, 0, '', 'http://vih.dk/');
     }
     $x = 40;
-    $this->setY(252);
     $this->setX($x);
     $this->SetFont($this->font, null, 14);
     $this->Write(14, 'Pris: ' . $price . ' kroner');
-    $this->setY(258);
+    $this->setY($this->GetY() + 6);
     $this->setX($x);
     $this->Write(14, 'Sted: ' . $location);
-    $this->setY(264);
+    $this->setY($this->GetY() + 6);
     $this->setX($x);
     $this->Write(14, 'Tid: ' . $date);
-    $this->setY(270);
+    $this->setY($this->GetY() + 6);
     $this->setX($x);
     $this->Write(14, 'Tilmelding: ' . $tilmelding);
     $this->Ln();
@@ -101,11 +109,14 @@ class VIH_Lectures_Pdf_Portrait extends VIH_Lectures_Pdf_PortraitLayout {
     $this->SetTitle($this->heading);
     $this->SetSubject($this->sub_title);
     $this->SetAuthor('Vejle Idrætshøjskole');
-    $this->SetAutoPageBreak(false);
+    $this->SetAutoPageBreak(TRUE, 0);
     foreach ($this->events as $event) {
       $this->addEventPage($event);
     }
 
+
     $this->Output('foredrag.pdf', 'I');
   }
+
+
 }
