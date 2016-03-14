@@ -126,7 +126,7 @@ class VIH_Lectures_Pdf_Portrait_pictures extends VIH_Lectures_Pdf_PortraitLayout
     $title = check_plain($event->title);
     $speaker = trim($event->field_speaker[LANGUAGE_NONE][0]['value']);
     $body_field = field_get_items('node', $event, 'body');
-    $body = check_markup($this->clearJavascript($body_field[0]['safe_value']), 'panopoly_wysiwyg_text');
+    $body = check_markup($this->clearJavascript($body_field[0]['value']), 'panopoly_wysiwyg_text');
     $picture = field_get_items('node', $event, 'field_picture');
     $location = trim($event->field_location[LANGUAGE_NONE][0]['safe_value']);
     $tilmelding = $this->base_url . '/node/' . $event->nid;
