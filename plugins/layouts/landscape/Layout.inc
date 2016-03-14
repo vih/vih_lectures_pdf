@@ -41,7 +41,7 @@ class VIH_Lectures_Pdf_Landscape extends VIH_Lectures_Pdf_Base {
   function addEventPage($event) {
     $title = check_plain($event->title);
     $body_field = field_get_items('node', $event, 'body');
-    $body = check_markup($this->clearJavascript($body_field[0]['safe_value']), 'panopoly_wysiwyg_text');
+    $body = check_markup($this->clearJavascript($body_field[0]['value']), 'panopoly_wysiwyg_text');
     $picture = field_get_items('node', $event, 'field_picture');
     $filename = drupal_realpath($picture[0]['uri']);
     $location = trim($event->field_location[LANGUAGE_NONE][0]['safe_value']);
